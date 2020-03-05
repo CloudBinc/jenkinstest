@@ -1,0 +1,61 @@
+<source>
+@type tail
+path /var/log/td-agent/docker
+pos_file /var/log/x.pos
+tag jenkinslogs
+#time_format %Y-%m-%d
+#time_format %s
+#        format multiline
+#        format_firstline /(?<EventTime>\S+ \d+, \d+ \d+:\d+:\d+ \S+) (?<Thread>[a-zA-Z.0-9$]+) (?<Action>[a-zA-Z.0-9$]+)/
+#format1 /^(?<data7>(?<time7>(?<eventtime>\S+ \d+, \d+ \d+:\d+:\d+ \S+)) (?<thread>[a-zA-Z.0-9$]+) (?<action>[a-zA-Z.0-9$]+)\n(?<severity>\S+): ?((?<jobname>[a-zA-Z_0-9]+) \#(?<jobnumber>\d+) (?<jobaction>[a-zA-Z]+)\: (?<status>[a-zA-Z]+))?(?<message>.*)?)$/
+        <parse>
+        @type multi_format
+                        <pattern>
+                                 format regexp
+                                 expression /^(?<data7>.+)$/
+                    #             Types pid:integer
+#                                 expression /^(?<data7>(?<time>\d+-\d+-\d+\s\d+:\d+:\d+.\d+\+\d+).*(?<ss>\w+).+$)/
+#                                 Time_Key time7
+#                                 Time_Format %Y/%m/%d %H:%M:%S.%L
+                                 </pattern>
+#       time_format %s
+        </parse>
+</source>
+
+
+<filter **>
+  @type record_modifier
+  <record>
+    willstore "${Time.at(time).to_datetime.iso8601(6)}"
+    longtime "${Time.at(time).to_f}"
+  </record>
+</filter>
+
+<filter jenkinslogss>
+@type record_transformer
+  <record>
+    host "#{Socket.gethostname}"
+    datatype7 "jenkins"
+ #   time7 ${Time.at(time).strftime('%s')}
+  </record>
+</filter>
+
+#<filter jenkinslogs>
+#  @type record_transformer
+#  auto_typecast
+#  enable_ruby
+#  <record>
+#     time7 ${Time.at(time).strftime('%s')}
+#     time7 ${record["time7"].to_i}    #Epoch time conversion
+#      time7 $Date.today.to_time.to_i
+#  </record>
+#</filter>
+
+###Local File Ouput
+
+
+<match jenkinslogs>
+@type file
+@id jenkinsoutput_file
+path /var/log/td-agent/parseddoc
+</match>
