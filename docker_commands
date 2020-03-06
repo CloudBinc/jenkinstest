@@ -1,1 +1,1 @@
-
+docker stats --no-stream --format "{\"container\":\"{{ .Container }}\",\"name\":\"{{ .Name }}\",\"memory\":\"{{ .MemUsage }}\",\"mem_percent\":\"{{ .MemPerc }}\",\"cpu\":\"{{ .CPUPerc }}\",\"network\":\"{{ .NetIO }}\",\"blockio\":\"{{ .BlockIO }}\",\"pids\":\"{{ .PIDs }}\"}"
