@@ -1,1 +1,8 @@
 (?<podname>^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*?)_(?<namespace>[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*?)_
+
+
+
+
+
+
+https://medium.com/@martatatiana/fluentd-add-log-path-to-the-record-ed45db7eb57c
